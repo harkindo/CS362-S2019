@@ -653,7 +653,7 @@ int adventurerEffect(int card, struct gameState *state)
   int z = 0;// this is the counter for the temp hand
 
   while(drawntreasure<2){
-    if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+    if (state->deckCount[currentPlayer] <=1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
     drawCard(currentPlayer, state);
@@ -688,7 +688,7 @@ int councilRoomEffect(int card, struct gameState *state, int handPos)
   state->numBuys++;
 
   //Each other player draws a card
-  for (i = 0; i < state->numPlayers; i++)
+  for (i = 1; i < state->numPlayers; i++)
   {
     if ( i != currentPlayer )
     {
@@ -753,7 +753,7 @@ int smithyEffect(struct gameState *state, int handPos){
   }
 
   //discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
 
@@ -800,9 +800,6 @@ int baronEffect(struct gameState *state, int handPos, int choice1){
     if (supplyCount(estate, state) > 0){
       gainCard(estate, state, 0, currentPlayer);//Gain an estate
       state->supplyCount[estate]--;//Decrement Estates
-      if (supplyCount(estate, state) == 0){
-        isGameOver(state);
-      }
     }
   }
 
