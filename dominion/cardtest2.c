@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------
- * Test for the adventurer card that runs when the cardEffect function is called
+ * Test for the village card that runs when the cardEffect function is called
  * -----------------------------------------------------------------------
  */
 
@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include "rngs.h"
 
-#define TESTCARD "adventurer"
+#define TESTCARD "village"
 
 bool assertTrue(bool b, char * errMsg){
     if (b) {
@@ -32,12 +32,11 @@ int main() {
 	int prevPlayedCount;
 
    	struct gameState G;
-    int oldNumTreasure=0;
-    int newNumTreasure=0;
     int seed = 1000;
     int numPlayers = 3;
     int currentPlayer = 0;
     int handPos = 0;
+	int oldNumActions;
     int k[10] = {council_room, embargo, village, minion, mine, cutpurse,
     			sea_hag, tribute, smithy, adventurer};
 
@@ -46,7 +45,7 @@ int main() {
 
     // initialize a game state and player cards
     initializeGame(numPlayers, k, seed, &G);
-    G.hand[currentPlayer][handPos] = adventurer;
+    G.hand[currentPlayer][handPos] = village;
 
 	// Store prevHandCount and prevPlayedCount
 	for (i=0;i<numPlayers;i++){
@@ -54,17 +53,12 @@ int main() {
 	}
 	prevPlayedCount = G.playedCardCount;
 
-    // Get number of treasure cards initialy in hand
-    for (i=0;i<G.handCount[currentPlayer];i++){
-        if (G.hand[currentPlayer][i] == copper || G.hand[currentPlayer][i] == silver || G.hand[currentPlayer][i] == gold){
-            oldNumTreasure++;
-        }
-    }
+	oldNumActions = G.numActions;
 
 
 	// Assert cardEffect returns 0
-	if (!assertTrue(cardEffect(adventurer, 0, 0, 0, &G, handPos, NULL) == 0,
-	"adventurer returns 0"))
+	if (!assertTrue(cardEffect(village, 0, 0, 0, &G, handPos, NULL) == 0,
+	"village returns 0"))
 		testPassed = false;
 
 	// Assert each player gets the proper number of cards
@@ -75,27 +69,20 @@ int main() {
 				testPassed = false;
 		}
 		else {
-			if (!assertTrue(prevHandCount[i] == G.handCount[i] - 1,
-				"current player gets +2 cards (then discards adventurer card)"))
+			if (!assertTrue(prevHandCount[i] == G.handCount[i],
+				"current player gets +1 cards (then discards village card)"))
 				testPassed = false;
 		}
 	}
 
-    // Get number of treasure cards now in hand
-    for (i=0;i<G.handCount[currentPlayer];i++){
-        if (G.hand[currentPlayer][i] == copper || G.hand[currentPlayer][i] == silver || G.hand[currentPlayer][i] == gold){
-            newNumTreasure++;
-        }
-    }
-
-    // Assert two more treasure cards in hand
-    if (!assertTrue(newNumTreasure == oldNumTreasure + 2,
-        "Two treasure cards added"))
+    // Assert two more actions are added
+    if (!assertTrue(G.numActions == oldNumActions + 2,
+        "Two actions added"))
         testPassed = false;
 
-	// Assert the adventurer card was discarded
+	// Assert the village card was discarded
 	if (!assertTrue(G.playedCardCount == prevPlayedCount+1,
-		"adventurer discarded after play") )
+		"village discarded after play") )
 		testPassed = false;
 
     if (testPassed)

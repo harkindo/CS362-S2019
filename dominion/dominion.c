@@ -644,7 +644,7 @@ int getCost(int cardNumber)
 }
 
 // Function to handle adventurer card cardEffect
-int adventurerEffect(int card, struct gameState *state)
+int adventurerEffect(int card, struct gameState *state, int handPos)
 {
   int currentPlayer = whoseTurn(state);
   int drawntreasure=0;
@@ -666,6 +666,10 @@ int adventurerEffect(int card, struct gameState *state)
       z++;
     }
   }
+
+  // Discard the adventurer card (at handpos) after play
+  discardCard(handPos, currentPlayer, state, 0);
+
   while(z-1>=0){
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
@@ -827,7 +831,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card )
     {
     case adventurer:
-      return adventurerEffect(card, state);
+      return adventurerEffect(card, state, handPos);
 
     case council_room:
       return councilRoomEffect(card, state, handPos);

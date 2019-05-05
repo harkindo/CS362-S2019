@@ -1,5 +1,31 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
+
+
+cardtest4: cardtest4.c dominion.o rngs.o
+	gcc -o cardtest4 -g  cardtest4.c dominion.o rngs.o $(CFLAGS)
+	./cardtest4
+	gcov -abcf dominion.c | grep -A 3 cardEffect
+	gcov -abc dominion.c
+
+cardtest3: cardtest3.c dominion.o rngs.o
+	gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o $(CFLAGS)
+	./cardtest3
+	gcov -abcf dominion.c | grep -A 3 cardEffect
+	gcov -abc dominion.c
+
+cardtest2: cardtest2.c dominion.o rngs.o
+	gcc -o cardtest2 -g  cardtest2.c dominion.o rngs.o $(CFLAGS)
+	./cardtest2
+	gcov -bcf dominion.c | grep -A 2 cardEffect
+	gcov -abc dominion.c
+
+cardtest1: cardtest1.c dominion.o rngs.o
+	gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o $(CFLAGS)
+	./cardtest1
+	gcov -bcf dominion.c | grep -A 2 cardEffect
+	gcov -abc dominion.c
+
 unittest4: unittest4.c dominion.o rngs.o
 	gcc -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
 	./unittest4
