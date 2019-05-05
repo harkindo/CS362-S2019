@@ -1,50 +1,110 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
+unittestresults: unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.o rngs.o
+	> unittestresults.out
+
+	gcc -o unittest1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
+	./unittest1 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 councilRoomEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o unittest2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
+	./unittest2 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 mineEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o unittest3 -g  unittest3.c dominion.o rngs.o $(CFLAGS)
+	./unittest3 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 smithyEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
+	./unittest4 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 baronEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o $(CFLAGS)
+	./cardtest1 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o cardtest2 -g  cardtest2.c dominion.o rngs.o $(CFLAGS)
+	./cardtest2 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o $(CFLAGS)
+	./cardtest3 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
+
+	echo "" >> unittestresults.out
+
+	gcc -o cardtest4 -g  cardtest4.c dominion.o rngs.o $(CFLAGS)
+	./cardtest4 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c | grep -A 4 File >> unittestresults.out
 
 
 cardtest4: cardtest4.c dominion.o rngs.o
 	gcc -o cardtest4 -g  cardtest4.c dominion.o rngs.o $(CFLAGS)
-	./cardtest4
-	gcov -abcf dominion.c | grep -A 3 cardEffect
-	gcov -abc dominion.c
+	./cardtest4 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 cardtest3: cardtest3.c dominion.o rngs.o
 	gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o $(CFLAGS)
-	./cardtest3
-	gcov -abcf dominion.c | grep -A 3 cardEffect
-	gcov -abc dominion.c
+	./cardtest3 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 cardtest2: cardtest2.c dominion.o rngs.o
 	gcc -o cardtest2 -g  cardtest2.c dominion.o rngs.o $(CFLAGS)
-	./cardtest2
-	gcov -bcf dominion.c | grep -A 2 cardEffect
-	gcov -abc dominion.c
+	./cardtest2 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 cardtest1: cardtest1.c dominion.o rngs.o
 	gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o $(CFLAGS)
-	./cardtest1
-	gcov -bcf dominion.c | grep -A 2 cardEffect
-	gcov -abc dominion.c
+	./cardtest1 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 cardEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 unittest4: unittest4.c dominion.o rngs.o
 	gcc -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
-	./unittest4
-	gcov dominion.c
+	./unittest4 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 baronEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 unittest3: unittest3.c dominion.o rngs.o
 	gcc -o unittest3 -g  unittest3.c dominion.o rngs.o $(CFLAGS)
-	./unittest3
-	gcov dominion.c
+	./unittest3 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 smithyEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 unittest2: unittest2.c dominion.o rngs.o
 	gcc -o unittest2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
-	./unittest2
-	gcov dominion.c
+	./unittest2 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 mineEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 unittest1: unittest1.c dominion.o rngs.o
 	gcc -o unittest1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
-	./unittest1
-	gcov dominion.c
+	./unittest1 >> unittestresults.out
+	gcov -bcf dominion.c | grep -A 2 councilRoomEffect >> unittestresults.out
+	gcov -abc dominion.c >> unittestresults.out
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)

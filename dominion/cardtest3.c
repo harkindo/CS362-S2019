@@ -28,15 +28,11 @@ int main() {
 
 	int i;
 
-	int prevHandCount[MAX_PLAYERS];
-	int prevPlayedCount;
-
    	struct gameState G, originalG;
     int seed = 1000;
     int numPlayers = 2;
     int currentPlayer = 0;
     int handPos = 0;
-	int oldNumActions;
     int k[10] = {council_room, embargo, village, minion, mine, cutpurse,
     			sea_hag, tribute, smithy, adventurer};
 

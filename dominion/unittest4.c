@@ -27,8 +27,6 @@ bool assertTrue(bool b, char * errMsg){
 int main() {
     bool unitTestPassed = true;
 
-	int i;
-
    	struct gameState G, testG;
 
     int seed = 1000;
