@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------
- * Test for the smithy card that runs when the cardEffect function is called
+ * Test for how the cardEffect function handles the gardens card being played
  * -----------------------------------------------------------------------
  */
 

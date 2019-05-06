@@ -91,10 +91,10 @@ int main() {
 		testPassed = false;
 
 
-	// Assert the village card was discarded
+	// Assert the smithy card was discarded
 	if (!assertTrue(G.playedCardCount > 0 &&
 		G.playedCards[G.playedCardCount-1] == smithy,
-		"smithy card in discard pile") )
+		"smithy card in played card pile") )
 		testPassed = false;
 
     if (testPassed)
