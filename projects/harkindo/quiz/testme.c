@@ -16,7 +16,7 @@ char *inputString()
     // Allocate a new string of length 6, set every letter to be a letter in
     // the string "reset\0"
     int i, j;
-    char * newString = (char*) malloc(sizeof(char)*6);
+    char * newString = (char*) malloc(sizeof(char)*7);
     for (i=0;i<6;i++){
         j = rand()%5;
         if (j==0)
@@ -30,6 +30,7 @@ char *inputString()
         else
             newString[i] = '\0';
     }
+    newString[6] = '\0';
     return newString;
 }
 
