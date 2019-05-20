@@ -1,5 +1,34 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
+randomtestresults: randomtestadventurer.c randomtestcard1.c randomtestcard2.c dominion.o rngs.o
+	gcc -o randomtestcard2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestcard2 >> randomtestresults.out
+	gcov -bcf dominion.c | grep -A 3 baronEffect >> randomtestresults.out
+
+	gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestcard1 >> randomtestresults.out
+	gcov -bcf dominion.c | grep -A 3 councilRoomEffect >> randomtestresults.out
+
+	gcc -o randomtestadventurer -g  randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestadventurer >> randomtestresults.out
+	gcov -bcf dominion.c | grep -A 3 adventurerEffect >> randomtestresults.out
+
+randomtestcard2: randomtestcard2.c dominion.o rngs.o
+	gcc -o randomtestcard2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestcard2
+	gcov -bcf dominion.c | grep -A 3 baronEffect
+
+randomtestcard1: randomtestcard1.c dominion.o rngs.o
+	gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestcard1
+	gcov -bcf dominion.c | grep -A 3 councilRoomEffect
+
+
+randomtestadventurer: randomtestadventurer.c dominion.o rngs.o
+	gcc -o randomtestadventurer -g  randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	-./randomtestadventurer
+	gcov -bcf dominion.c | grep -A 3 adventurerEffect
+
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
@@ -24,7 +53,7 @@ testAll: dominion.o testSuite.c
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
 
-runtests: testDrawCard 
+runtests: testDrawCard
 	./testDrawCard &> unittestresult.out
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
@@ -33,7 +62,7 @@ runtests: testDrawCard
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
-all: playdom player 
+all: playdom player
 
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
