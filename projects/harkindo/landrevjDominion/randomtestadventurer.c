@@ -72,7 +72,7 @@ int randomState(struct gameState * G, int card){
 	if (G->handCount[G->whoseTurn] == 0){
 		G->handCount[G->whoseTurn] = 1;
 	}
-	i = random(0, G->handCount[G->whoseTurn]);
+	i = 0;
 	G->hand[G->whoseTurn][i] = card;
 	return i;
 }
@@ -83,6 +83,7 @@ int main() {
 	int i, handPos, numRuns;
 	int oldNumTreasure;
     int newNumTreasure;
+	int oldTreasureSupply;
 
    	struct gameState G, originalG;
 
@@ -98,7 +99,7 @@ int main() {
 		memcpy(&originalG, &G, sizeof(struct gameState));
 
 		// Assert adventurer returns 0
-		if (!assertTrue(adventurerEffect(adventurer, &G) == 0,
+		if (!assertTrue(cardeffect_adventurer(&G) == 0,
 		"adventurer returns 0"))
 			testPassed = false;
 
@@ -176,10 +177,15 @@ int main() {
 	        }
 	    }
 
+		oldTreasureSupply = G.supplyCount[copper] + G.supplyCount[silver] + G.supplyCount[gold];
+
+
 	    // Assert two more treasure cards in hand
-	    if (!assertTrue(newNumTreasure == oldNumTreasure + 2,
-	        "Two treasure cards added"))
+	    if (!assertTrue(newNumTreasure == oldNumTreasure + 2 || oldTreasureSupply < 2,
+	        "Two treasure cards added")){
 	        testPassed = false;
+			printf("Old num treasure:%d \nNew num treasure: %d\n Treasure supply: %d\n",oldNumTreasure, newNumTreasure, oldTreasureSupply );
+		}
 	}
 
 

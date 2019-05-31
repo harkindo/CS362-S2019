@@ -87,7 +87,7 @@ int main() {
 		memcpy(&originalG, &G, sizeof(struct gameState));
 
 		// Assert council room returns 0
-		if (!assertTrue(councilRoomEffect(council_room, &G, handPos) == 0,
+		if (!assertTrue(cardEffect(council_room, 0, 0, 0, &G, handPos, NULL) == 0,
 		"council room returns 0"))
 			testPassed = false;
 

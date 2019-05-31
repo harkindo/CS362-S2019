@@ -72,7 +72,7 @@ int randomState(struct gameState * G, int card){
 
 int main() {
     bool testPassed = true;
-	int oldNumEstates, numEstates;
+	int oldNumEstates, numEstates, numEstatesDiff;
 
 	int i, handPos, numRuns, choice;
 
@@ -89,7 +89,7 @@ int main() {
 		memcpy(&originalG, &G, sizeof(struct gameState));
 
 		// Assert baron returns 0
-		if (!assertTrue(baronEffect(&G, handPos, choice) == 0,
+		if (!assertTrue(cardEffect(baron, choice, 0, 0, &G, handPos, NULL) == 0,
 		"baron returns 0"))
 			testPassed = false;
 
@@ -146,6 +146,7 @@ int main() {
 		}
 		oldNumEstates = 0;
 		numEstates = 0;
+		numEstatesDiff = 0;
 		for (i=0;i<originalG.handCount[originalG.whoseTurn];i++){
 			if (originalG.hand[originalG.whoseTurn][i] == estate)
 				oldNumEstates++;
@@ -154,8 +155,15 @@ int main() {
 			if (G.hand[G.whoseTurn][i] == estate)
 				numEstates++;
 		}
+		for (i=0;i<G.discardCount[G.whoseTurn];i++){
+			if (G.discard[G.whoseTurn][i] == estate)
+				numEstatesDiff++;
+		}
+		for (i=0;i<originalG.discardCount[originalG.whoseTurn];i++){
+			if (originalG.discard[originalG.whoseTurn][i] == estate)
+				numEstatesDiff--;
+		}
 		if (oldNumEstates > 0 && choice == 1){
-			printf("there were %d estates in hand\n", oldNumEstates);
 			if (!assertTrue(G.coins == originalG.coins + 4,
 				"estate exchanged for 4 coins"))
 				testPassed = false;
@@ -164,7 +172,6 @@ int main() {
 				testPassed = false;
 		}
 		else {
-			printf("there were %d estates in hand\n", oldNumEstates);
 			if (!assertTrue(G.supplyCount[estate] == originalG.supplyCount[estate] - 1
 							|| originalG.supplyCount[estate] == 0,
 				"estate removed from supply"))
@@ -172,10 +179,11 @@ int main() {
 			if (!assertTrue(G.coins == originalG.coins,
 				"no coins added since no estate in original hand"))
 				testPassed = false;
-			if (!assertTrue(numEstates == 1 || originalG.supplyCount[estate] == 0,
-				"estate added to hand (or no estate in supply pile)"))
+			if (!assertTrue(numEstatesDiff == 1 || originalG.supplyCount[estate] == 0,
+				"estate added to deck (or no estate in supply pile)")){
+				printf("Estates diff: %d\n", numEstatesDiff);
 				testPassed = false;
-
+			}
 		}
 
 		if (!assertTrue(G.playedCardCount != originalG.playedCardCount,

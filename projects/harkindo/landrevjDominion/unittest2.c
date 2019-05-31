@@ -51,7 +51,7 @@ int main() {
 	//set first card in hand to mine, second to adventurer.
 	testG.hand[currentPlayer][0] = mine;
 	testG.hand[currentPlayer][1] = adventurer;
-	if (!assertTrue(mineEffect(mine, &testG, 0, 1, gold) == -1,
+	if (!assertTrue(cardEffect(mine, 1, gold, 0, &testG, 0, NULL) == -1,
 		"Cannot exchange non-treasure cards"))
 		unitTestPassed = false;
 
@@ -60,7 +60,8 @@ int main() {
 	memcpy(&testG, &G, sizeof(struct gameState));
 	testG.hand[currentPlayer][0] = mine;
 	testG.hand[currentPlayer][1] = copper;
-	if (!assertTrue(mineEffect(mine, &testG, 0, 1, gold) == -1,
+    assertTrue(getCost(gold) == 6 && getCost(copper) == 0, "cost of gold is 6, copper 3");
+	if (!assertTrue(cardEffect(mine, 1, gold, 0, &testG, 0, NULL) == -1,
 		"Cannot exchange treasure for one with a value of more than +3"))
 		unitTestPassed = false;
 
@@ -76,7 +77,7 @@ int main() {
 			oldNumCoppers++;
 	}
 
-	if (!assertTrue(mineEffect(mine, &testG, 0, 1, silver) == 0,
+	if (!assertTrue(cardEffect(mine, 1, silver, 0, &testG, 0, NULL) == 0,
 		"Can exchange treasure for another one with a value of +3 or less"))
 		unitTestPassed = false;
 

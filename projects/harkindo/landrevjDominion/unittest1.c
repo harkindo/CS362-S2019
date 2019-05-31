@@ -51,7 +51,7 @@ int main() {
     }
     prevPlayedCount = testG.playedCardCount;
 
-    councilRoomEffect(council_room, &testG, currentPlayer);
+    cardEffect(council_room, 0, 0, 0, &testG, currentPlayer, NULL);
 
     // Assert each player gets the proper number of cards
     for (i=0;i<numPlayers;i++){
@@ -84,7 +84,7 @@ int main() {
     }
     prevPlayedCount = testG.playedCardCount;
 
-    councilRoomEffect(council_room, &testG, currentPlayer);
+    cardEffect(council_room, 0, 0, 0, &testG, currentPlayer, NULL);
 
     // Assert each player gets the proper number of cards
     for (i=0;i<numPlayers;i++){
