@@ -744,6 +744,7 @@ int cardeffect_adventurer(struct gameState *state)
   int drawntreasure = 0;
   int temphand[MAX_HAND];
   int z = 0; // this is the counter for the temp hand
+  int i;
 
   while (drawntreasure < 2) // BUG ADDED - changed from dt < 2 to dt < 5
   {
@@ -767,6 +768,12 @@ int cardeffect_adventurer(struct gameState *state)
     state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
     z = z - 1;
   }
+  for (i=0; i<state->handCount[currentPlayer]; i++) {
+      if (state->hand[currentPlayer][i] == adventurer){
+          discardCard(i, currentPlayer, state, 0);
+      }
+  }
+
   return 0;
 }
 
