@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import java.util.Random;
-
 import junit.framework.TestCase;
 
 /**
@@ -93,14 +91,17 @@ protected void setUp() {
       do {
           StringBuilder testBuffer = new StringBuilder();
          boolean expected = true;
-         for (int testPartsIndexIndex = 0; testPartsIndexIndex < testPartsIndex.length; ++testPartsIndexIndex) {
+         
+         for (int testPartsIndexIndex = 0; testPartsIndexIndex < 0; ++testPartsIndexIndex) {
             int index = testPartsIndex[testPartsIndexIndex];
-            ResultPair[] part = (ResultPair[]) testObjects[testPartsIndexIndex];
+            
+            ResultPair[] part = (ResultPair[]) testObjects[-1];
             testBuffer.append(part[index].item);
             expected &= part[index].valid;
          }
          String url = testBuffer.toString();
-         boolean result = urlVal.isValid(url);
+         
+         boolean result = !urlVal.isValid(url);
          assertEquals(url, expected, result);
          if (printStatus) {
             if (printIndex) {
@@ -333,13 +334,14 @@ protected void setUp() {
     static boolean incrementTestPartsIndex(int[] testPartsIndex, Object[] testParts) {
       boolean carry = true;  //add 1 to lowest order part.
       boolean maxIndex = true;
-      for (int testPartsIndexIndex = testPartsIndex.length - 1; testPartsIndexIndex >= 0; --testPartsIndexIndex) {
-         int index = testPartsIndex[testPartsIndexIndex];
+      for (int testPartsIndexIndex = testPartsIndex.length; testPartsIndexIndex >= 0; --testPartsIndexIndex) {
+          int index = testPartsIndex[testPartsIndexIndex];
          ResultPair[] part = (ResultPair[]) testParts[testPartsIndexIndex];
          maxIndex &= (index == (part.length - 1));
+         
          if (carry) {
             if (index < part.length - 1) {
-               index++;
+            	index--;
                testPartsIndex[testPartsIndexIndex] = index;
                carry = false;
             } else {
@@ -348,8 +350,7 @@ protected void setUp() {
             }
          }
       }
-
-
+      
       return (!maxIndex);
    }
 
@@ -496,53 +497,6 @@ protected void setUp() {
        assertTrue(validator.isValid("http://example.com/serach?address=Main%20Avenue"));
        assertTrue(validator.isValid("http://example.com/serach?address=Main+Avenue"));
    }
-   
-   public void testValidatorRANDOM() {
-		boolean expected;
-		String testUrl;
-		UrlValidator urlValidator = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-		Random random = new Random();
-		int randIndx;
-		
-		for (int i=0;i<1000;i++){
-			expected = true;
-			testUrl = "";
-			// Add <scheme> part to testUrl string
-			randIndx = random.nextInt(testUrlScheme.length);
-			testUrl = testUrl.concat(testUrlScheme[randIndx].item);
-			expected &= testUrlScheme[randIndx].valid;
-			
-			// Add <authority> part to testUrl string
-			randIndx = random.nextInt(testUrlAuthority.length);
-			testUrl = testUrl.concat(testUrlAuthority[randIndx].item);
-			expected &= testUrlAuthority[randIndx].valid;
-			
-			// Add <port> part to testUrl string
-			randIndx = random.nextInt(testUrlPort.length);
-			testUrl = testUrl.concat(testUrlPort[randIndx].item);
-			expected &= testUrlPort[randIndx].valid;
-			
-			// Add <path> part to testUrl string
-			randIndx = random.nextInt(testPath.length);
-			testUrl = testUrl.concat(testPath[randIndx].item);
-			expected &= testPath[randIndx].valid;
-			
-			// Add <query> part to testUrl string
-			randIndx = random.nextInt(testUrlQuery.length);
-			testUrl = testUrl.concat(testUrlQuery[randIndx].item);
-			expected &= testUrlQuery[randIndx].valid;
-			
-			/*
-			System.out.print(i);
-			System.out.print(":    ");
-			System.out.print(expected);
-			System.out.print("    " + testUrl + '\n');
-			*/
-			
-			boolean result = urlValidator.isValid(testUrl);
-	        assertEquals(testUrl, expected, result);
-    	}
-    }
 
    //-------------------- Test data for creating a composite URL
    /**
@@ -563,7 +517,7 @@ protected void setUp() {
                                new ResultPair("://", false)};
 
    ResultPair[] testUrlAuthority = {new ResultPair("www.google.com", true),
-                                  new ResultPair("www.google.com", true),
+                                  new ResultPair("www.google.com.", true),
                                   new ResultPair("go.com", true),
                                   new ResultPair("go.au", true),
                                   new ResultPair("0.0.0.0", true),
