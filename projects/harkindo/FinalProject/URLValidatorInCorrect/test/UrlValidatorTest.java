@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
+import java.io.*;
+import java.net.URL;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import junit.framework.TestCase;
 
 /**
@@ -37,6 +43,47 @@ protected void setUp() {
          testPartsIndex[index] = 0;
       }
    }
+   
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+
+   public void isValidUnitTest() {
+	   try {
+		   File f = new File(getClass().getClassLoader().getResource("unit-test-urls.txt").getFile());
+		   Scanner reader = new Scanner(f); 
+		   int i = 1;
+		   while (reader.hasNextLine()) {
+			   String data = reader.nextLine();
+			   
+			   Pattern p = Pattern.compile("(.*)\\s(true|false)");
+			   Matcher m = p.matcher(data);
+			   
+			   if (m.find()) {
+				   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+				   
+				   if (Boolean.parseBoolean(m.group(2))) {					   
+					   System.out.println("Asserting valid... " + m.group(1) );
+					   assertTrue(urlVal.isValid(m.group(1)));
+				   } else {
+					   System.out.println("Asserting invalid... " + m.group(1) );
+					   assertFalse(urlVal.isValid(m.group(1)));
+				   }
+			   } else {
+				   System.out.println("Unable to parse line: " + i);
+			   }
+			   i++;
+		   }	
+		   reader.close();
+	   } catch (FileNotFoundException e) {
+		   System.out.println("unit-test-urls.txt file not found in classpath");
+		   e.printStackTrace();
+	   }	
+   }
+
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
 
    public void testIsValid() {
         testIsValid(testUrlParts, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -72,6 +119,7 @@ protected void setUp() {
       }
 
    }
+   
 
    /**
     * Create set of tests by taking the testUrlXXX arrays and
@@ -598,6 +646,5 @@ protected void setUp() {
                             new ResultPair("not_valid", false), // underscore not allowed
                             new ResultPair("HtTp", true),
                             new ResultPair("telnet", false)};
-
 
 }

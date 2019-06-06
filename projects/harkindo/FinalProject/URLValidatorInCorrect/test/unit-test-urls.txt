@@ -1,0 +1,21 @@
+https://www.google.com/ true
+ftp://go.com:80/test1 true
+h3t://255.255.255.255:65535/t123?action=view true
+http://amazon.com/asdf/3a4/6nq3/6/hq4/6a3/4/ true
+ftp://mozilla.org/stuff?here=maybe true
+random-asdf://yep.co/stuff true
+randomasdf://asdf.co/asdf true
+http://example.com/page?this&that true
+http://example.com/page?foo=bar&this=that true
+more://valid.urls.com:1234 true
+
+?://google.com false
+3ht://1.2.3.4:9999999/test1/file false
+http:go.au:80/ false
+http/go.cc:256/test1//file false
+://www.google.com/ false
+https://finesofar.invalidtld/ false
+weird://?.nope.com false
+https://invalidport:asdf/yep false
+https://dotsinpath.com/../ false
+https:// .com/space false
